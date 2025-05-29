@@ -1,0 +1,384 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+  <h1>Noise Model Evaluator</h1>
+
+  {# Upload Form - Show only if models are not yet evaluated #}
+  {% if not models %}
+    <form method="POST" enctype="multipart/form-data" class="upload-form" id="uploadForm">
+      <input type="file" name="file" accept=".xlsx" required id="fileInput">
+      <button type="submit" id="uploadButton">Upload and Run</button>
+    </form>
+    <div class="data-requirements">
+            <h3>Required Dataset Format</h3>
+            <p>Your Excel file must include the following columns:</p>
+             <div class="columns-container">
+                <div class="column-item">"Peak type"</div>
+                <div class="column-item">"2-w (V)"</div>
+                <div class="column-item">"2-w (S)"</div>
+                <div class="column-item">"Vikram (V)"</div>
+                <div class="column-item">"Vikram (S)"</div>
+                <div class="column-item">"Car (V)"</div>
+                <div class="column-item">"Car (S)"</div>
+                <div class="column-item">"Auto (V)"</div>
+                <div class="column-item">"Auto (S)"</div>
+                <div class="column-item">"LCV (V)"</div>
+                <div class="column-item">"LCV (S)"</div>
+                <div class="column-item">"Tractor (V)"</div>
+                <div class="column-item">"Tractor (S)"</div>
+                <div class="column-item">"Bus (V)"</div>
+                <div class="column-item">"Bus (S)"</div>
+                <div class="column-item">"Truck (V)"</div>
+                <div class="column-item">"Truck (S)"</div>
+                <div class="column-item">"Rickshaw (V)"</div>
+                <div class="column-item">"Rickshaw (S)"</div>
+                <div class="column-item">"e-Rickshaw (V)"</div>
+                <div class="column-item">"e-Rickshaw (S)"</div>
+                <div class="column-item">"Cycle (V)"</div>
+                <div class="column-item">"Cycle (S)"</div>
+                <div class="column-item">"Horse D V (V)"</div>
+                <div class="column-item">"Horse D V (S)"</div>
+                <div class="column-item">"Total (V)"</div>
+                <div class="column-item">"Lane Width (m)"</div>
+                <div class="column-item">"IDSS (m)"</div>
+                <div class="column-item">"IDOS (m)"</div>
+                <div class="column-item">"Leq"</div>
+                <div class="column-item">"Landuse"</div>
+                <div class="column-item">"Latitude"</div>
+                <div class="column-item">" Longitude"</div>
+            </div>
+        </div>
+      </div>
+    <script>
+      // Disable the upload button after clicking if a file is selected
+      document.getElementById('uploadForm').addEventListener('submit', function(e) {
+        const fileInput = document.getElementById('fileInput');
+        const uploadButton = document.getElementById('uploadButton');
+        
+        if (fileInput.files.length > 0) {
+          uploadButton.disabled = true;
+          uploadButton.textContent = 'Processing...';
+        }
+      });
+    </script>
+  {% endif %}
+
+  {# Error Display #}
+  {% if error %}
+    <p class="error">{{ error }}</p>
+  {% endif %}
+
+  {# Display Results Block if Models Exist #}
+  {% if models %}
+    {% for model, data in models.items() %}
+      <div class="model-block">
+        <h2>{{ model }}</h2>
+
+        {# Metrics Table #}
+        <table class="metrics-table">
+          <thead>
+            <tr>
+              <th>Peak Type</th>
+              <th>R²</th>
+              <th>MSE</th>
+              <th>MAE</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for peak, m in data.metrics.items() %}
+              <tr>
+                <td>{{ peak }}</td>
+                <td>{{ m.R2 }}</td>
+                <td>{{ m.MSE }}</td>
+                <td>{{ m.MAE }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+        {# Plots Display #}
+        <div class="plots">
+          {% for img in data.plots %}
+            <div class="plot-item">
+              <img src="{{ url_for('static', filename='images/' + img) }}" alt="{{ model }} {{ img.rsplit('_', 1)[1].replace('.png','') }}">
+              <p>{{ img.rsplit('_', 1)[1].replace('.png','') }}</p>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% endfor %}
+  {% endif %}
+</div>
+
+<!-- Full-screen overlay for enlarged image -->
+<div id="fullscreen-overlay">
+  <img id="fullscreen-image" src="" alt="Enlarged Plot">
+  <button id="close-button" aria-label="Close full-screen view">✕</button>
+</div>
+
+<style>
+  /* Existing styles assumed to be in base.html or elsewhere */
+  /* Adding styles specific to the full-screen functionality */
+  .plots {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 20px;
+  }
+  .data-requirements {
+    margin: 20px 0;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+}
+
+.data-requirements h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #2d3748;
+    font-size: 1.3rem;
+}
+  .plot-item {
+    text-align: center;
+  }
+
+  .plot-item img {
+    max-width: 300px;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd;
+    cursor: pointer; /* Indicate clickable image */
+  }
+
+  .plot-item p {
+    margin-top: 10px;
+    font-size: 0.95rem;
+    color: #555;
+  }
+
+  /* Full-screen Overlay Styles */
+  #fullscreen-overlay {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent background */
+    z-index: 1000; /* Ensure it appears above other content */
+    justify-content: center;
+    align-items: center;
+  }
+
+  #fullscreen-image {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain; /* Preserve aspect ratio */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  #close-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: #fff;
+    color: #333;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 24px;
+    line-height: 40px;
+    text-align: center;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.2s;
+  }
+
+  #close-button:hover {
+    background-color: #ddd;
+  }
+
+  /* Prevent scrolling when overlay is open */
+  body.fullscreen-active {
+    overflow: hidden;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .plot-item img {
+      max-width: 100%;
+    }
+
+    #close-button {
+      top: 10px;
+      right: 10px;
+      width: 32px;
+      height: 32px;
+      font-size: 20px;
+      line-height: 32px;
+    } 
+  }
+  .columns-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.column-item {
+    background-color: #edf2f7;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    color: #4a5568;
+    border: 1px solid #e2e8f0;
+}
+
+  /* iPhone 14 Pro Max (~430px viewport width) */
+@media (max-width: 430px) {
+    .container {
+        padding: 10px; /* Further reduced padding */
+    }
+
+    .container h1 {
+        font-size: 1.8rem;
+    }
+
+    .container h2 {
+        font-size: 1.3rem;
+    }
+
+    .data-requirements {
+        padding: 15px;
+        margin: 15px 0;
+    }
+
+    .data-requirements h3 {
+        font-size: 1.1rem;
+        margin-bottom: 10px;
+    }
+
+    .columns-container {
+        gap: 6px;
+    }
+
+    .column-item {
+        font-size: 0.8rem;
+        padding: 5px 8px;
+    }
+
+    .upload-form input[type="file"],
+    .upload-form button {
+        font-size: 0.85rem;
+    }
+
+    .upload-form input[type="file"] {
+        padding: 8px;
+    }
+
+    .upload-form button {
+        padding: 10px;
+    }
+
+    .metrics-table {
+        font-size: 0.8rem; /* Even smaller for iPhone */
+    }
+
+    .metrics-table th,
+    .metrics-table td {
+        padding: 6px 8px;
+    }
+
+    .metrics-table th.wide-col,
+    .metrics-table td.wide-col {
+        min-width: 120px; /* Reduced for iPhone */
+        max-width: 150px;
+    }
+
+    .limit-summary {
+        padding: 10px;
+    }
+
+    .limit-summary h3 {
+        font-size: 1.3rem;
+    }
+
+    .peak-card {
+        width: 90%; /* Slightly wider to use available space */
+        padding: 12px;
+    }
+
+    .peak-card h4 {
+        font-size: 1rem;
+    }
+
+    .peak-count {
+        font-size: 1.8rem;
+    }
+
+    .peak-label {
+        font-size: 0.8rem;
+    }
+
+    .Note {
+        font-size: 0.85rem;
+    }
+
+    a[href*=".csv"] {
+        padding: 6px 12px;
+        font-size: 0.85rem;
+    }
+}
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const images = document.querySelectorAll('.plot-item img');
+    const overlay = document.getElementById('fullscreen-overlay');
+    const fullscreenImage = document.getElementById('fullscreen-image');
+    const closeButton = document.getElementById('close-button');
+
+    // Function to open full-screen overlay
+    const openFullscreen = (src, alt) => {
+      fullscreenImage.src = src;
+      fullscreenImage.alt = alt;
+      overlay.style.display = 'flex';
+      document.body.classList.add('fullscreen-active');
+    };
+
+    // Function to close full-screen overlay
+    const closeFullscreen = () => {
+      overlay.style.display = 'none';
+      fullscreenImage.src = ''; // Clear image source
+      document.body.classList.remove('fullscreen-active');
+    };
+
+    // Add click event to each image
+    images.forEach(image => {
+      image.addEventListener('click', () => {
+        openFullscreen(image.src, image.alt);
+      });
+    });
+
+    // Close overlay when close button is clicked
+    closeButton.addEventListener('click', closeFullscreen);
+
+    // Close overlay when clicking outside the image
+    overlay.addEventListener('click', (event) => {
+      if (event.target === overlay) {
+        closeFullscreen();
+      }
+    });
+
+    // Allow closing with Escape key
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && overlay.style.display === 'flex') {
+        closeFullscreen();
+      }
+    });
+  });
+</script>
+{% endblock %}

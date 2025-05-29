@@ -1,0 +1,212 @@
+{% extends 'base.html' %} {% block content %}
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Ancizar+Serif:ital,wght@0,300..900;1,300..900&display=swap"
+  rel="stylesheet"
+/>
+<!-- Home Page Content -->
+<div class="container" id="home">
+  <div class="card mb-12">
+    <h2 class="card-header">Introduction</h2>
+    <div class="card-body">
+      <p>
+        Welcome to our project on vehicular traffic noise analysis and
+        prediction in Kanpur, Uttar Pradesh [the reason for selecting this site
+        is detailed in the About section]. The project aims to assess current
+        noise levels across different city zones and compare them with CPCB
+        standards. Our focus is on vehicular traffic noise, offering insights
+        into the extent of noise pollution and its impact on the local
+        community.
+      </p>
+    </div>
+  </div>
+
+  <div class="card mb-12">
+    <h2 class="card-header">Dataset</h2>
+    <div class="card-body">
+      <p class="mb-4">
+        Our dataset comprises noise level measurements from 14 locations across
+        Kanpur, collected over six months. Measurements were taken once a month
+        on a fixed day, simultaneously at all locations, ensuring a consistent
+        and comprehensive view of city-wide noise patterns.
+      </p>
+      <p>
+        At each site, data from two road lanes was recorded during three peak
+        periods—Morning, Afternoon, and Evening—each lasting one hour. Noise
+        levels were measured using an A-weighted scale and reported as
+        equivalent continuous sound levels (Leq) in dB(A).
+      </p>
+    </div>
+  </div>
+
+  <div class="card mb-12">
+    <h2 class="card-header">Methods</h2>
+    <div class="card-body">
+      <div class="method-item mb-4">
+        <h3 class="text-green-700 font-medium mb-2">Sound Measurement</h3>
+        <p>
+          We used a Class 1 Sound Level Meter (SLM) with an integrated
+          microphone and GPS to measure sound levels and record location data.
+          The SLM has a dynamic range of 21-138 dB(A), where "dB" denotes
+          decibels and "A" represents the human ear's frequency sensitivity.
+          Measurements followed CPCB noise monitoring guidelines.
+        </p>
+      </div>
+
+      <div class="method-item mb-4">
+        <h3 class="text-green-700 font-medium mb-2">Speed Detection</h3>
+        <p>
+          Vehicle spot speeds were measured using an HR K-Band Handheld Radar
+          Gun, operating at 24.125 GHz ± 100 MHz, with a speed range of 16-330
+          km/h in stationary mode and typically 9-334 km/h.
+        </p>
+      </div>
+
+      <div class="method-item mb-4">
+        <h3 class="text-green-700 font-medium mb-2">Weather Monitoring</h3>
+        <p>
+          A portable weather station with a handheld display, powered by a
+          Li-NCR18650 battery and equipped with a bird spike, recorded real-time
+          weather parameters such as temperature, humidity, wind
+          speed/direction, and atmospheric pressure.
+        </p>
+      </div>
+
+      <div class="method-item">
+        <h3 class="text-green-700 font-medium mb-2">Traffic Analysis</h3>
+        <p>
+          Data was collected for 12 vehicle types, improving dataset robustness
+          for Indian road conditions. Average traffic volume and speed for each
+          vehicle type were also recorded.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card mb-12">
+    <h2 class="card-header">Results</h2>
+    <div class="card-body">
+      <p>
+        Our predictions and findings indicate that noise levels at many
+        locations, during various peak times, exceeded the permissible limits
+        set by the CPCB. These results underscore the urgent need for
+        implementing noise mitigation strategies in Kanpur.
+      </p>
+      <div class="text-center mt-6">
+        <a href="/results" class="btn">View Detailed Results</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Base Styles */
+  body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f9f9f9;
+  }
+
+  .container {
+    font-family: "Ancizar Serif", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    font-size: 17px;
+  }
+
+  /* Card Styles */
+  .card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    border-left: 4px solid #2e7d32;
+  }
+
+  .card-header {
+    background-color: #f0f8f0;
+    padding: 1rem 1.5rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #2e7d32;
+    border-bottom: 1px solid #e0f2e0;
+  }
+
+  .card-body {
+    padding: 1.5rem;
+  }
+
+  /* Button Styles */
+  .btn {
+    display: inline-block;
+    background-color: #2e7d32;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+  }
+
+  .btn:hover {
+    background-color: #1b5e20;
+  }
+
+  /* Helper Classes */
+  .text-center {
+    text-align: center;
+  }
+
+  .font-bold {
+    font-weight: 700;
+  }
+
+  .font-medium {
+    font-weight: 500;
+  }
+
+  .text-4xl {
+    font-size: 2.25rem;
+  }
+
+  .text-2xl {
+    font-size: 1.5rem;
+  }
+
+  .text-green-800 {
+    color: #1b5e20;
+  }
+
+  .text-green-700 {
+    color: #2e7d32;
+  }
+
+  .my-8 {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .mb-12 {
+    margin-bottom: 3rem;
+  }
+
+  .mb-4 {
+    margin-bottom: 1rem;
+  }
+
+  .mb-2 {
+    margin-bottom: 0.5rem;
+  }
+
+  .mt-6 {
+    margin-top: 1.5rem;
+  }
+</style>
+{% endblock %}

@@ -1,0 +1,20 @@
+<table>
+    <thead>
+        <tr>
+            <th>Peak Type</th>
+            <th>R2</th>
+            <th>MSE</th>
+            <th>MAE</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for peak_type, metrics in metrics.items() %}
+        <tr>
+            <td>{{ peak_type }}</td>
+            <td>{{ metrics.R2 }}</td>
+            <td>{{ metrics.MSE }}</td>
+            <td>{{ metrics.MAE }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

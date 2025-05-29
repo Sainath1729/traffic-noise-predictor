@@ -1,0 +1,641 @@
+{% extends 'base.html' %} {% block content %}
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Ancizar+Serif:ital,wght@0,300..900;1,300..900&display=swap"
+  rel="stylesheet"
+/>
+<div class="container" id="about">
+  <header class="page-header">
+    <h1>About Our Vehicular Traffic Noise Project</h1>
+  </header>
+
+  <div class="card mb-12">
+    <h2 class="card-header">Project Overview</h2>
+    <div class="card-body">
+      <p>
+        This traffic noise prediction and assessment project represents a
+        comprehensive effort to understand and document the acoustic environment
+        of an urban city [here Kanpur], one of India's major industrial and
+        urban centers. The source from which we acquired the data has collected,
+        analysed and interpreted data to create an accurate picture of noise
+        exposure across different zones of the city.
+      </p>
+    </div>
+  </div>
+
+  <div class="card mb-12">
+    <h2 class="card-header">Project Methodology</h2>
+    <div class="card-body">
+      <h3 class="text-green-700 font-medium mb-2">Data Collection Process</h3>
+      <ul class="methodology-list">
+        <li>
+          <strong>Sampling Strategy:</strong> 14 sample locations which cover
+          the city area strategically selected across residential, commercial,
+          industrial, and silence zones. From Feb 2019 to July 2021, data was
+          collected for a total of 42 hours at fourteen locations that
+          represented various land use categories on each roadway.
+        </li>
+        <li>
+          <strong>Temporal Coverage:</strong> Noise measurements were taken
+          during three peak periods—morning (8:00-9:00 am), afternoon
+          (12:00-1:00 pm), and evening (5:00-6:00 pm)—at a location with two
+          lanes, resulting in 6 entries per day (3 times * 2 lanes). For each
+          month, this gives 84 entries (14 days * 6 entries), and over 6 months,
+          a total of 504 entries were collected.
+        </li>
+        <li>
+          <strong>Equipment:</strong> A Class 1 Sound Level Meter (SLM) with GPS
+          was used to measure traffic noise and location. Vehicle spot speeds
+          were recorded using a HR K-Band Handheld Radar Gun (24.125 GHz ± 100
+          MHz, range: 16–330 km/h stationary, 9–334 km/h typical). A Wi-Fi
+          camera with 1080p HD, night vision, motion detection, 2-way talk, and
+          up to 256GB storage captured traffic videos. Real-time weather data
+          were collected using a portable weather station with a handheld
+          display and rechargeable battery. As per IS 3028:1998 and ISO 11819-1,
+          the SLM was placed 7.5 m from the lane centerline and 1.2 m above the
+          pavement.
+        </li>
+        <li>
+          <strong>Measurement Duration:</strong> Noise levels were measured for
+          a period of one hour on an A-weighted scale and reported in equivalent
+          noise level (Leq), dB(A) units. The average traffic volume and speed
+          for each vehicle group were also recorded.
+        </li>
+        <li>
+          <strong>Noise Maps:</strong> Noise maps depicting the variation of the
+          noise level of Kanpur city and created by the application of QGIS
+          Version-3.40.5 software. These noise map spatial distributions will
+          help to find the hotspot locations of the city. A noise map depicts
+          the shifting sound levels inside a particular geographical area over a
+          specific time-period. Further details about noise mapping are
+          discussed in the noise map section.
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card mb-12">
+    <h2 class="card-header">Dataset Features</h2>
+    <div class="card-body">
+      <p>Our comprehensive dataset includes:</p>
+      <ul class="feature-list">
+        <li>
+          <strong>Geospatial Data:</strong> GPS coordinates for each sampling
+          location.
+        </li>
+        <li>
+          <strong>Acoustic Parameters:</strong> Sound pressure levels (dB(A)).
+        </li>
+        <li>
+          <strong>Environmental Variables:</strong> Temperature, humidity, wind
+          speed, atmospheric pressure.
+        </li>
+        <li>
+          <strong>Contextual Information:</strong> Land use, vehicle density,
+          average vehicle speed, Peak type.
+        </li>
+        <li>
+          <strong>Road parameters:</strong> Lane width, divider width (median),
+          IDSS (Instrument distance same side), IDOS (Instrument distance
+          opposite side) all in meters.
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card mb-12">
+    <h2 class="card-header">
+      Noise Pollution: A Growing Environmental Concern
+    </h2>
+    <div class="card-body">
+      <h3 class="text-green-700 font-medium mb-2">
+        Understanding Noise Pollution
+      </h3>
+      <p>
+        Noise pollution refers to unwanted or excessive sound that can have
+        detrimental effects on human health and environmental quality. Unlike
+        other forms of pollution, noise doesn't leave visible evidence but
+        causes significant physiological and psychological impacts.
+      </p>
+      <p>
+        Noise is measured in decibels (dB), with higher values indicating louder
+        sounds. The measurement is typically weighted (dB(A)) to account for the
+        varying sensitivity of human hearing to different frequencies.
+      </p>
+
+      <h3 class="text-green-700 font-medium mb-2">
+        Health Impacts of Noise Exposure
+      </h3>
+      <p>
+        Prolonged exposure to elevated noise levels has been linked to numerous
+        health issues:
+      </p>
+      <ul class="impact-list">
+        <li>
+          <strong>Auditory Effects:</strong> Temporary or permanent hearing
+          loss, tinnitus
+        </li>
+        <li>
+          <strong>Cardiovascular Effects:</strong> Increased blood pressure,
+          heart rate variability, risk of hypertension
+        </li>
+        <li>
+          <strong>Psychological Effects:</strong> Annoyance, stress, anxiety,
+          depression
+        </li>
+        <li>
+          <strong>Cognitive Impairment:</strong> Reduced concentration, impaired
+          learning, decreased work performance
+        </li>
+        <li>
+          <strong>Sleep Disturbances:</strong> Difficulty falling asleep,
+          reduced sleep quality, daytime fatigue.
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card mb-12">
+    <h2 class="card-header">Why Kanpur? (Site Selection)</h2>
+    <div class="card-body">
+      <p>
+        Kanpur, the largest city in Uttar Pradesh, is a major commercial and
+        industrial hub in northern India. As per the 2011 Census, it has a
+        population of 29.20 million and covers 3,155 sq. km. According to the
+        Ministry of Road Transport and Highways (MoRTH), the city has 16.16
+        million registered vehicles.
+      </p>
+      <p>
+        The rise of industries and commercial sites has increased city traffic,
+        leading to congestion and various forms of pollution, including noise.
+        This study focused on fourteen mid-block locations with free-flowing
+        traffic and good road conditions, categorized into four land-use zones:
+        residential, commercial, industrial, and silent zones.
+      </p>
+      <p>
+        Kanpur was selected for this study due to several factors that make it
+        particularly relevant for noise pollution research:
+      </p>
+      <ul class="site-selection-list">
+        <li>
+          <strong>Industrial Heritage:</strong> As one of India's major
+          industrial centers, Kanpur has numerous factories and manufacturing
+          units contributing to the acoustic environment
+        </li>
+        <li>
+          <strong>Urban Density:</strong> High population density (approximately
+          6,600 people per km²) creates dense living conditions where noise
+          propagation affects many residents
+        </li>
+        <li>
+          <strong>Transportation Hub:</strong> Major railway junction and
+          extensive road network with heavy traffic contributing to
+          transportation noise
+        </li>
+        <li>
+          <strong>Mixed Land Use:</strong> Close proximity of industrial,
+          commercial, and residential areas creating complex noise patterns
+        </li>
+        <li>
+          <strong>Rapid Urbanization:</strong> Ongoing development and
+          construction activities generating additional noise sources
+        </li>
+        <li>
+          <strong>Limited Previous Research:</strong> Despite these factors,
+          comprehensive noise mapping studies in Kanpur have been limited
+        </li>
+      </ul>
+
+      <h3 class="text-green-700 font-medium mb-2 mt-4">Study Locations</h3>
+      <p>The 14 locations which were chosen for measurements are as follows:</p>
+      <div class="table-container">
+        <table class="locations-table">
+          <thead>
+            <tr>
+              <th>I.D.</th>
+              <th>Locations</th>
+              <th>Zone</th>
+              <th>Latitude</th>
+              <th>Longitude</th>
+              <th>Road Type</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>L1</td>
+              <td>Naveen Market</td>
+              <td>Commercial</td>
+              <td>26°28'25.7" N</td>
+              <td>80°20'54.2" E</td>
+              <td>Bituminous</td>
+            </tr>
+            <tr>
+              <td>L2</td>
+              <td>Saket Nagar</td>
+              <td>Residential</td>
+              <td>26°26'03.1" N</td>
+              <td>80°19'21.0" E</td>
+              <td>Bituminous</td>
+            </tr>
+            <tr>
+              <td>L3</td>
+              <td>Mapple Kids School</td>
+              <td>Silence</td>
+              <td>26°26'20.0" N</td>
+              <td>80°17'34.8" E</td>
+              <td>Bituminous</td>
+            </tr>
+            <tr>
+              <td>L4</td>
+              <td>Kamadgiri Lawn</td>
+              <td>Residential</td>
+              <td>26°26'21.5" N</td>
+              <td>80°16'39.0" E</td>
+              <td>Bituminous</td>
+            </tr>
+            <tr>
+              <td>L5</td>
+              <td>M-Block, Kidwai Nagar</td>
+              <td>Residential</td>
+              <td>26°26'06.5"N</td>
+              <td>80°20'12.2"E</td>
+              <td>Bituminous</td>
+            </tr>
+            <tr>
+              <td>L6</td>
+              <td>KDA Market</td>
+              <td>Commercial</td>
+              <td>26°29'45.2" N</td>
+              <td>80°17'18.6" E</td>
+              <td>Bituminous</td>
+            </tr>
+            <tr>
+              <td>L7</td>
+              <td>KMC Hospital</td>
+              <td>Silence</td>
+              <td>26°28'11.3" N</td>
+              <td>80°18'12.2" E</td>
+              <td>Bituminous</td>
+            </tr>
+            <tr>
+              <td>L8</td>
+              <td>M G Park</td>
+              <td>Residential</td>
+              <td>26°27'15.5" N</td>
+              <td>80°21'50.8" E</td>
+              <td>Bituminous</td>
+            </tr>
+            <tr>
+              <td>L9</td>
+              <td>New Transport Nagar</td>
+              <td>Commercial</td>
+              <td>26°27'31.7" N</td>
+              <td>80°14'01.7" E</td>
+              <td>Bituminous</td>
+            </tr>
+            <tr>
+              <td>L10</td>
+              <td>KPR, Kanpur</td>
+              <td>Industrial</td>
+              <td>26°27'35.6" N</td>
+              <td>80°15'39.2" E</td>
+              <td>Bituminous</td>
+            </tr>
+            <tr>
+              <td>L11</td>
+              <td>Jajmau</td>
+              <td>Industrial</td>
+              <td>26°25'56.6" N</td>
+              <td>80°23'55.3" E</td>
+              <td>Bituminous</td>
+            </tr>
+            <tr>
+              <td>L12</td>
+              <td>Dada Nagar</td>
+              <td>Industrial</td>
+              <td>26°27'14.0" N</td>
+              <td>80°17'26.5" E</td>
+              <td>Bituminous</td>
+            </tr>
+            <tr>
+              <td>L13</td>
+              <td>Jarib Chawki</td>
+              <td>Commercial</td>
+              <td>26°27'37.4" N</td>
+              <td>80°19'35.8" E</td>
+              <td>Bituminous</td>
+            </tr>
+            <tr>
+              <td>L14</td>
+              <td>DMSRDE, Kanpur</td>
+              <td>Industrial</td>
+              <td>26°25'48.0" N</td>
+              <td>80°21'50.4" E</td>
+              <td>Bituminous</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="card mb-12">
+    <h2 class="card-header">Regulatory Framework and Standards</h2>
+    <div class="card-body">
+      <h3 class="text-green-700 font-medium mb-2">
+        Central Pollution Control Board (CPCB) Noise Standards
+      </h3>
+      <p>
+        The Government of India has established the following permissible noise
+        limits for different areas:
+      </p>
+
+      <div class="table-container">
+        <table class="standards-table">
+          <thead>
+            <tr>
+              <th>Area Code</th>
+              <th>Category of Area/Zone</th>
+              <th>Limits in dB(A) Leq - Day Time</th>
+              <th>Limits in dB(A) Leq - Night Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>A</td>
+              <td>Industrial area</td>
+              <td>75</td>
+              <td>70</td>
+            </tr>
+            <tr>
+              <td>B</td>
+              <td>Commercial area</td>
+              <td>65</td>
+              <td>55</td>
+            </tr>
+            <tr>
+              <td>C</td>
+              <td>Residential area</td>
+              <td>55</td>
+              <td>45</td>
+            </tr>
+            <tr>
+              <td>D</td>
+              <td>Silence Zone</td>
+              <td>50</td>
+              <td>40</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="table-note">
+        *Silence Zones include areas within 100 meters of hospitals, educational
+        institutions, courts, religious places, or any other area declared as
+        such by the competent authority.
+      </p>
+    </div>
+  </div>
+
+  <div class="card mb-12">
+    <h2 class="card-header">Key Project Results</h2>
+    <div class="card-body">
+      <ul class="results-list">
+        <li>
+          <strong>Exceedance of Standards:</strong> Considering 14 locations on
+          a single day, out of 42 peak times exceedance of standard noise limits
+          was observed 30+ times.
+        </li>
+        <li>
+          <strong>Future Directions:</strong> Evidence-based policymaking for
+          noise control in urban areas. Development of targeted noise abatement
+          strategies for identified hotspots. Integration of noise
+          considerations into urban planning and development.
+        </li>
+      </ul>
+
+      <div class="text-center mt-6">
+        <a href="/results" class="btn">View Detailed Results</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card mb-12" id="data-source">
+    <h2 class="card-header">Data Source</h2>
+    <div class="card-body">
+      <div class="researcher-info">
+        <p>
+          <strong>Dr. Saurabh Upadhyay</strong><br />
+          Faculty (Contractual), Department of Civil Engineering<br />
+          Expertise: Traffic Noise Modelling, Noise Barriers, Sustainable and
+          Public Transportation Systems (BRTS)<br />
+          Email:
+          <a href="mailto:supadhyay@nitgoa.ac.in">supadhyay@nitgoa.ac.in</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+  /* Base Styles */
+  body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f9f9f9;
+  }
+
+  .container {
+    font-family: "Ancizar Serif", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    font-size: 17px;
+  }
+
+  /* Card Styles */
+  .card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    border-left: 4px solid #2e7d32;
+    margin-bottom: 3rem;
+  }
+
+  .card-header {
+    background-color: #f0f8f0;
+    padding: 1rem 1.5rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #2e7d32;
+    border-bottom: 1px solid #e0f2e0;
+  }
+
+  .card-body {
+    padding: 1.5rem;
+  }
+
+  /* Page Header */
+  .page-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .page-header h1 {
+    font-size: 2.25rem;
+    color: #1b5e20;
+    font-weight: 700;
+  }
+
+  /* Typography */
+  h3 {
+    color: #2e7d32;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+
+  ul {
+    padding-left: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  ul li {
+    margin-bottom: 0.5rem;
+  }
+
+  strong {
+    font-weight: 600;
+  }
+
+  /* Table Styles */
+  .table-container {
+    overflow-x: auto;
+    margin: 1rem 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+    background-color: white;
+  }
+
+  th {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    font-weight: 600;
+    text-align: left;
+    padding: 0.75rem 1rem;
+    border: 1px solid #c8e6c9;
+  }
+
+  td {
+    padding: 0.75rem 1rem;
+    border: 1px solid #e0e0e0;
+  }
+
+  tr:nth-child(even) {
+    background-color: #f5f5f5;
+  }
+
+  tr:hover {
+    background-color: #edf7ee;
+  }
+
+  .table-note {
+    font-size: 0.9rem;
+    font-style: italic;
+    color: #666;
+    margin-top: 0.5rem;
+  }
+
+  /* Lists */
+  .methodology-list,
+  .feature-list,
+  .impact-list,
+  .site-selection-list,
+  .results-list {
+    list-style-type: disc;
+  }
+
+  /* Researcher Info */
+  .researcher-info {
+    background-color: #f8f8f8;
+    padding: 1rem;
+    border-radius: 4px;
+    border-left: 3px solid #2e7d32;
+  }
+
+  .researcher-info a {
+    color: #2e7d32;
+    text-decoration: none;
+  }
+
+  .researcher-info a:hover {
+    text-decoration: underline;
+  }
+
+  /* Button */
+  .btn {
+    display: inline-block;
+    background-color: #2e7d32;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+  }
+
+  .btn:hover {
+    background-color: #1b5e20;
+  }
+
+  /* Helper Classes */
+  .text-center {
+    text-align: center;
+  }
+
+  .font-bold {
+    font-weight: 700;
+  }
+
+  .font-medium {
+    font-weight: 500;
+  }
+
+  .text-green-700 {
+    color: #2e7d32;
+  }
+
+  .text-green-800 {
+    color: #1b5e20;
+  }
+
+  .mb-12 {
+    margin-bottom: 3rem;
+  }
+
+  .mb-4 {
+    margin-bottom: 1rem;
+  }
+
+  .mb-2 {
+    margin-bottom: 0.5rem;
+  }
+
+  .mt-4 {
+    margin-top: 1rem;
+  }
+
+  .mt-6 {
+    margin-top: 1.5rem;
+  }
+</style>
+
+{% endblock %}

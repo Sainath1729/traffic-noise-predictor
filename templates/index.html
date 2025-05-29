@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Noise Model Evaluator</title>
+  <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Noise Model Evaluator</h1>
+
+    <form method="post" enctype="multipart/form-data">
+      <input type="file" name="dataset" accept=".xlsx" required>
+      <button type="submit">Upload and Run</button>
+    </form>
+
+    {% if error %}
+      <p class="error">{{ error }}</p>
+    {% endif %}
+
+    {% if models %}
+      {% for model, data in models.items() %}
+        <div class="model-block">
+          <h2>{{ model }}</h2>
+          <table>
+            <tr><th>Peak Type</th><th>R²</th><th>MSE</th><th>MAE</th></tr>
+            {% for peak, m in data.metrics.items() %}
+              <tr>
+                <td>{{ peak }}</td>
+                <td>{{ m.R2 }}</td>
+                <td>{{ m.MSE }}</td>
+                <td>{{ m.MAE }}</td>
+              </tr>
+            {% endfor %}
+          </table>
+          <div class="plots">
+            {% for img in data.plots %}
+              <div class="plot-item">
+                <img src="{{ url_for('static', filename='images/' + img) }}" alt="{{ model }} {{ img }}">
+                <p>{{ img.split('_')[-1].split('.png')[0] }}</p>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      {% endfor %}
+    {% endif %}
+  </div>
+</body>
+</html>

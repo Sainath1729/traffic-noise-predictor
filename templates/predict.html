@@ -1,0 +1,492 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>Noise Value Predictor</h1>
+
+    {% if error %}
+        <div class="error">{{ error }}</div>
+    {% endif %}
+
+    {% if not predictions %}
+        <p class="Note">*Upload an Excel file (.xlsx) containing environmental and traffic data to get noise level predictions.</p>
+        
+        <form method="POST" enctype="multipart/form-data" class="upload-form" id="uploadForm">
+            <input type="file" name="file" accept=".xlsx" required id="fileInput">
+            <button type="submit" id="uploadButton" class="btn btn-primary">Upload and Predict</button>
+        </form>
+        <div class="data-requirements">
+            <h3>Required Dataset Format</h3>
+            <p>Your Excel file must include the following columns:</p>
+            <div class="columns-container">
+                <div class="column-item">"Peak type"</div>
+                <div class="column-item">"2-w (V)"</div>
+                <div class="column-item">"2-w (S)"</div>
+                <div class="column-item">"Vikram (V)"</div>
+                <div class="column-item">"Vikram (S)"</div>
+                <div class="column-item">"Car (V)"</div>
+                <div class="column-item">"Car (S)"</div>
+                <div class="column-item">"Auto (V)"</div>
+                <div class="column-item">"Auto (S)"</div>
+                <div class="column-item">"LCV (V)"</div>
+                <div class="column-item">"LCV (S)"</div>
+                <div class="column-item">"Tractor (V)"</div>
+                <div class="column-item">"Tractor (S)"</div>
+                <div class="column-item">"Bus (V)"</div>
+                <div class="column-item">"Bus (S)"</div>
+                <div class="column-item">"Truck (V)"</div>
+                <div class="column-item">"Truck (S)"</div>
+                <div class="column-item">"Rickshaw (V)"</div>
+                <div class="column-item">"Rickshaw (S)"</div>
+                <div class="column-item">"e-Rickshaw (V)"</div>
+                <div class="column-item">"e-Rickshaw (S)"</div>
+                <div class="column-item">"Cycle (V)"</div>
+                <div class="column-item">"Cycle (S)"</div>
+                <div class="column-item">"Horse D V (V)"</div>
+                <div class="column-item">"Horse D V (S)"</div>
+                <div class="column-item">"Total (V)"</div>
+                <div class="column-item">"Lane Width (m)"</div>
+                <div class="column-item">"IDSS (m)"</div>
+                <div class="column-item">"IDOS (m)"</div>
+                <div class="column-item">"Landuse"</div>
+                <div class="column-item">"Latitude"</div>
+                <div class="column-item">"Longitude"</div>
+            </div>
+        </div>
+        <script>
+            document.getElementById('uploadForm').addEventListener('submit', function(e) {
+                const fileInput = document.getElementById('fileInput');
+                const uploadButton = document.getElementById('uploadButton');
+                if (fileInput.files.length > 0) {
+                    uploadButton.disabled = true;
+                    uploadButton.textContent = 'Processing...';
+                }
+            });
+        </script>
+    {% endif %}
+
+    {% if predictions %}
+        <h2>Predictions</h2>
+        <a href="{{ url_for('static', filename='csv/' ~ csv_file) }}" download>Download Predictions CSV</a>
+
+        <div class="table-container">
+            <table class="metrics-table">
+                <thead>
+                    <tr>
+                        {% for col in predictions[0].keys() %}
+                            <th{% if col in ['Noise Limit Check', 'Location'] %} class="wide-col"{% endif %}>{{ col }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in predictions %}
+                        <tr>
+                            {% for key, val in row.items() %}
+                                {% if key == 'Noise Limit Check' %}
+                                    <td class="wide-col" style="white-space:nowrap; color:{{ val == 'Under the Limit' and 'green' or 'red' }};">
+                                        {{ val }}
+                                    </td>
+                                {% elif key == 'Location' %}
+                                    <td class="wide-col" style="white-space:nowrap;">{{ val }}</td>
+                                {% else %}
+                                    <td>{{ val }}</td>
+                                {% endif %}
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Limit Check Summary -->
+        <div class="limit-summary">
+            <h3>Limit Check Summary</h3>
+            {% set order = ['Morning ', 'Afternoon', 'Evening'] %}
+            <div class="peak-type-summary">
+                {% for peak in order %}
+                    {% set group = predictions | selectattr('Peak type', 'equalto', peak) | list %}
+                    {% if group %}
+                        {% set over_count = group | selectattr('Noise Limit Check', 'equalto', 'Over the Limit') | list | length %}
+                        <div class="peak-card {{ peak|lower }}">
+                            <h4>{{ peak }} Peak</h4>
+                            <div class="peak-count">{{ over_count }}</div>
+                            <div class="peak-label">locations over limit</div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+<style>
+/* Override and complement styles from style.css for responsiveness */
+
+/* Container Adjustments */
+.container {
+    padding: 30px; /* Default for laptop */
+    box-sizing: border-box;
+}
+
+/* Form Adjustments */
+.upload-form input[type="file"] {
+    padding: 12px; /* Adjusted for better touch target */
+    font-size: 1rem;
+}
+
+.upload-form button {
+    padding: 15px 20px; /* Slightly smaller padding for better fit */
+    font-size: 1rem;
+}
+
+/* Data Requirements Section */
+.data-requirements {
+    margin: 20px 0;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+}
+
+.data-requirements h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #2d3748;
+    font-size: 1.3rem;
+}
+
+.columns-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.column-item {
+    background-color: #edf2f7;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    color: #4a5568;
+    border: 1px solid #e2e8f0;
+}
+
+/* Table Container for Horizontal Scroll on Mobile */
+.table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+}
+
+/* Table Adjustments */
+.metrics-table {
+    width: 100%; /* Override the 60% width for better fit */
+    font-size: 0.95rem; /* Default for laptop */
+}
+
+.metrics-table th,
+.metrics-table td {
+    padding: 10px 15px;
+}
+
+.metrics-table th.wide-col,
+.metrics-table td.wide-col {
+    min-width: 160px;
+    max-width: 200px;
+}
+
+/* Limit Summary Adjustments */
+.limit-summary {
+    font-family: "Ancizar Serif", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    margin-top: 30px;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    border: 1px solid #e0e0e0;
+}
+
+.limit-summary h3 {
+    font-family: "Ancizar Serif", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.75rem;
+    color: #333333;
+}
+
+.peak-type-summary {
+    font-family: "Ancizar Serif", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.peak-card {
+    flex: 1;
+    min-width: 200px;
+    padding: 20px;
+    border-radius: 12px;
+    color: #ffffff;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.peak-card h4 {
+    margin: 0 0 10px;
+    font-size: 1.25rem;
+}
+
+.peak-count {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.peak-label {
+    font-size: 0.9rem;
+}
+
+.peak-card.morning {
+    background: linear-gradient(135deg, #ff7e5f, #feb47b);
+}
+
+.peak-card.afternoon {
+    background: linear-gradient(135deg, #76b852, #8DC26F);
+}
+
+.peak-card.evening {
+    background: linear-gradient(135deg, #355C7D, #6C5B7B);
+}
+
+/* Note Styling */
+.Note {
+    color: red;
+    font-weight: 200;
+    padding-left: 3px;
+    font-size: 1rem;
+}
+
+/* Download Link Styling */
+a[href*=".csv"] {
+    display: inline-block;
+    margin: 10px 0;
+    padding: 10px 20px;
+    background-color: #38a169;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+a[href*=".csv"]:hover {
+    background-color: #2f855a;
+}
+
+/* Responsive Adjustments */
+
+/* General Mobile (≤768px) */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px; /* Reduced padding for mobile */
+        margin-top: 10px;
+    }
+
+    .container h1 {
+        font-size: 2rem; /* Smaller heading for mobile */
+    }
+
+    .container h2 {
+        font-size: 1.5rem;
+    }
+
+    .data-requirements h3 {
+        font-size: 1.2rem;
+    }
+
+    .columns-container {
+        gap: 8px;
+    }
+
+    .column-item {
+        font-size: 0.85rem;
+        padding: 6px 10px;
+    }
+
+    .upload-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .upload-form input[type="file"],
+    .upload-form button {
+        width: 100%;
+        box-sizing: border-box;
+        font-size: 0.9rem; /* Slightly smaller for mobile */
+    }
+
+    .upload-form input[type="file"] {
+        padding: 10px;
+    }
+
+    .upload-form button {
+        padding: 12px;
+        margin-top: 10px;
+    }
+
+    .metrics-table {
+        font-size: 0.85rem; /* Smaller font for mobile */
+    }
+
+    .metrics-table th,
+    .metrics-table td {
+        padding: 8px 10px; /* Reduced padding for compactness */
+    }
+
+    .limit-summary {
+        padding: 15px;
+    }
+
+    .limit-summary h3 {
+        font-size: 1.5rem;
+    }
+
+    .peak-type-summary {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .peak-card {
+        width: 80%;
+        min-width: 0; /* Remove min-width to fit smaller screens */
+        padding: 15px;
+    }
+
+    .peak-card h4 {
+        font-size: 1.1rem;
+    }
+
+    .peak-count {
+        font-size: 2rem;
+    }
+
+    .peak-label {
+        font-size: 0.85rem;
+    }
+
+    .Note {
+        font-size: 0.9rem;
+    }
+
+    a[href*=".csv"] {
+        padding: 8px 15px;
+        font-size: 0.9rem;
+    }
+}
+
+/* iPhone 14 Pro Max (~430px viewport width) */
+@media (max-width: 430px) {
+    .container {
+        padding: 10px; /* Further reduced padding */
+    }
+
+    .container h1 {
+        font-size: 1.8rem;
+    }
+
+    .container h2 {
+        font-size: 1.3rem;
+    }
+
+    .data-requirements {
+        padding: 15px;
+        margin: 15px 0;
+    }
+
+    .data-requirements h3 {
+        font-size: 1.1rem;
+        margin-bottom: 10px;
+    }
+
+    .columns-container {
+        gap: 6px;
+    }
+
+    .column-item {
+        font-size: 0.8rem;
+        padding: 5px 8px;
+    }
+
+    .upload-form input[type="file"],
+    .upload-form button {
+        font-size: 0.85rem;
+    }
+
+    .upload-form input[type="file"] {
+        padding: 8px;
+    }
+
+    .upload-form button {
+        padding: 10px;
+    }
+
+    .metrics-table {
+        font-size: 0.8rem; /* Even smaller for iPhone */
+    }
+
+    .metrics-table th,
+    .metrics-table td {
+        padding: 6px 8px;
+    }
+
+    .metrics-table th.wide-col,
+    .metrics-table td.wide-col {
+        min-width: 120px; /* Reduced for iPhone */
+        max-width: 150px;
+    }
+
+    .limit-summary {
+        padding: 10px;
+    }
+
+    .limit-summary h3 {
+        font-size: 1.3rem;
+    }
+
+    .peak-card {
+        width: 90%; /* Slightly wider to use available space */
+        padding: 12px;
+    }
+
+    .peak-card h4 {
+        font-size: 1rem;
+    }
+
+    .peak-count {
+        font-size: 1.8rem;
+    }
+
+    .peak-label {
+        font-size: 0.8rem;
+    }
+
+    .Note {
+        font-size: 0.85rem;
+    }
+
+    a[href*=".csv"] {
+        padding: 6px 12px;
+        font-size: 0.85rem;
+    }
+}
+</style>
+{% endblock %}

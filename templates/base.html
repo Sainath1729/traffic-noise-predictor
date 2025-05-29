@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Noise Level Prediction</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+  <div class="layout">
+    <!-- Single Toggle Button for Both Desktop and Mobile -->
+    <button class="sidebar-toggle" id="sidebar-toggle">
+      <span class="toggle-icon">☰</span>
+    </button>
+
+    <div class="sidebar" id="sidebar">
+      <div class="logo-container">
+      </div>
+      <nav>
+        <ul>
+          <li><a href="{{ url_for('home') }}" class="nav-link {% if request.endpoint=='home' %}active{% endif %}">Home</a></li>
+          <li><a href="{{ url_for('about') }}" class="nav-link {% if request.endpoint=='about' %}active{% endif %}">About</a></li>
+          <li><a href="{{ url_for('results') }}" class="nav-link {% if request.endpoint=='results' %}active{% endif %}">Results</a></li>
+          <li><a href="{{ url_for('noisemaps') }}" class="nav-link {% if request.endpoint=='noisemaps' %}active{% endif %}">Noise maps</a></li>
+          <li><a href="{{ url_for('predict') }}" class="nav-link {% if request.endpoint=='predict' %}active{% endif %}">Predict</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="main-content">
+      <h1 class="site-title">Vehicular Traffic Noise Prediction</h1>
+      {% block content %}{% endblock %}
+    </div>
+  </div>
+
+  <style>
+    /* Override .site-title::after to use the logo image as a small circular favicon */
+    .site-title::after {
+      content: url("{{ url_for('static', filename='images/logo.png') }}");
+      position: absolute;
+      bottom: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color:transparent;
+      width: 32px; /* Favicon-like size */
+      height: 32px;
+      display: block;
+      line-height: 0; /* Remove any extra space */
+    }
+
+    /* Fallback: Use background-image if content: url() fails */
+    .site-title::after {
+      content: "";
+      background-image: url("{{ url_for('static', filename='images/logo.png') }}");
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      position: absolute;
+      bottom: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color:transparent;
+      width: 50px;
+      height: 50px;
+      border-radius:50%;%
+    }
+  </style>
+
+  <script>
+    // Variables to track sidebar state
+    let isSidebarOpen = true;
+    let isMobileView = window.innerWidth <= 768;
+    
+    // Toggle sidebar function
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const layout = document.querySelector('.layout');
+      const toggleIcon = document.querySelector('.toggle-icon');
+      const mainContent = document.querySelector('.main-content');
+      const toggleButton = document.getElementById('sidebar-toggle');
+      
+      isSidebarOpen = !isSidebarOpen;
+      
+      if (isMobileView) {
+        // Mobile toggle behavior
+        sidebar.classList.toggle('open');
+        layout.classList.toggle('sidebar-hidden');
+        
+        // Handle overlay for mobile
+        let overlay = document.getElementById('sidebar-overlay');
+        if (sidebar.classList.contains('open')) {
+          toggleIcon.textContent = '✕';
+          if (!overlay) {
+            overlay = document.createElement('div');
+            overlay.id = 'sidebar-overlay';
+            overlay.onclick = function() { toggleSidebar(); };
+            document.body.appendChild(overlay);
+          }
+          setTimeout(() => {
+            overlay.classList.add('active');
+          }, 10);
+        } else {
+          toggleIcon.textContent = '☰';
+          if (overlay) {
+            overlay.classList.remove('active');
+            setTimeout(() => {
+              if (overlay.parentNode) {
+                overlay.parentNode.removeChild(overlay);
+              }
+            }, 300);
+          }
+        }
+      } else {
+        // Desktop toggle behavior
+        sidebar.classList.toggle('hidden');
+        layout.classList.toggle('sidebar-hidden');
+        mainContent.classList.toggle('expanded-full');
+        
+        // Update toggle icon direction
+        toggleIcon.textContent = isSidebarOpen ? '☰' : '☰';
+      }
+    }
+
+    // Check screen size and adjust UI accordingly
+    function checkScreenSize() {
+      const oldIsMobileView = isMobileView;
+      isMobileView = window.innerWidth <= 768;
+      const sidebar = document.getElementById('sidebar');
+      const toggleButton = document.getElementById('sidebar-toggle');
+      const toggleIcon = document.querySelector('.toggle-icon');
+      const layout = document.querySelector('.layout');
+      
+      // Handle transition between mobile and desktop views
+      if (oldIsMobileView !== isMobileView) {
+        if (isMobileView) {
+          // Switching to mobile view
+          sidebar.classList.remove('hidden');
+          sidebar.classList.remove('open');
+          layout.classList.remove('sidebar-hidden');
+          layout.classList.add('sidebar-hidden');
+          document.querySelector('.main-content').classList.remove('expanded-full');
+          toggleIcon.textContent = '☰';
+          toggleButton.classList.add('mobile');
+          isSidebarOpen = false;
+        } else {
+          // Switching to desktop view
+          sidebar.classList.remove('open');
+          sidebar.classList.remove('hidden');
+          layout.classList.remove('sidebar-hidden');
+          toggleButton.classList.remove('mobile');
+          isSidebarOpen = true;
+          toggleIcon.textContent = '☰';
+          
+          // Remove any mobile overlay
+          const overlay = document.getElementById('sidebar-overlay');
+          if (overlay) overlay.parentNode.removeChild(overlay);
+        }
+      }
+    }
+    
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      const toggleButton = document.getElementById('sidebar-toggle');
+      toggleButton.addEventListener('click', toggleSidebar);
+      
+      checkScreenSize();
+      
+      // Listen for window resize
+      window.addEventListener('resize', checkScreenSize);
+    });
+  </script>
+</body>
+</html>

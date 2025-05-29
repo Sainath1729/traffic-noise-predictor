@@ -1,0 +1,706 @@
+{% extends 'base.html' %} {% block content %}
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Ancizar+Serif:ital,wght@0,300..900;1,300..900&display=swap"
+  rel="stylesheet"
+/>
+<header class="page-header">
+  <div class="container">
+    <h1>Kanpur City Noise Maps Analysis</h1>
+    <p class="page-subheader">
+      Traffic Noise Assessment Across Different Time Periods
+    </p>
+  </div>
+</header>
+
+<div class="container">
+  <div class="card mb-12">
+    <div class="card-header">Overview</div>
+    <div class="card-body">
+      <p>
+        This analysis presents comprehensive noise mapping data for Kanpur city
+        across different time periods (morning, afternoon, and evening). The
+        maps utilize a color-coded system to visualize noise levels at various
+        monitoring locations throughout the city, helping to identify areas with
+        concerning noise pollution levels.
+      </p>
+
+      <p>
+        Noise pollution is measured using a Noise Value Index, with lower values
+        (shown in red) indicating quieter zones and higher values (shown in
+        blue) representing higher noise pollution areas.The data collection
+        covers multiple monitoring points labeled L1 through L14.
+      </p>
+
+      <div class="legend-container">
+        <h3>Noise Level Index Legend</h3>
+        <p>The color coding represents noise values where:</p>
+        <div class="legend-item">
+          <div class="color-box red-zone"></div>
+          <span><strong>Red:</strong> Lowest noise pollution </span>
+        </div>
+        <div class="legend-item">
+          <div class="color-box orange-zone"></div>
+          <span><strong>Orange:</strong> Lower noise pollution </span>
+        </div>
+        <div class="legend-item">
+          <div class="color-box yellow-zone"></div>
+          <span><strong>Yellow:</strong> Moderate noise levels</span>
+        </div>
+        <div class="legend-item">
+          <div class="color-box green-zone"></div>
+          <span
+            ><strong>Light Green:</strong> Moderate to high noise pollution
+          </span>
+        </div>
+        <div class="legend-item">
+          <div class="color-box blue-zone"></div>
+          <span><strong>Blue:</strong> Highest noise pollution</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card mb-12">
+    <div class="card-header">Noise Maps by Time Period</div>
+    <div class="card-body">
+      <div class="map-container">
+        <div class="map-item">
+          <img src="{{ url_for('static', filename='images/' +
+          "Morning_noise_value_updated.png") }}">
+          <h3 class="map-title">Morning Noise Mapping</h3>
+          <p class="map-description">
+            The morning period noise distribution reveals significant variations across monitored locations, with a noise range of 70.9 to 79.3 dB. Hotspots L12, L11, and L13 exhibit elevated noise levels between 76 and 80 dB, primarily due to high traffic. Locations L11 and L13, designated as commercial zones, exceed their prescribed noise limits by 11 dB. Most critically, L12, classified as a silent zone, surpasses its permissible noise limit by approximately 30 dB, which is unacceptable. The quietest area L8, records a noise level of 70.9 dB.
+          </p>
+          <p class="map-description">
+            <strong>Noise range:</strong> 70.9 - 79.3 dB index values
+          </p>
+        </div>
+
+        <div class="map-item">
+          <img src="{{ url_for('static', filename='images/' +
+          "Afternoon_noise_map.png") }}">
+          <h3 class="map-title">Afternoon Noise Map</h3>
+          <p class="map-description">
+            The afternoon period noise distribution reveals significant variations across monitored locations, with a noise range of 71.14 - 78.18 dB. Hotspots L12, L11, and L13 exhibit elevated noise levels between 75 and 79 dB, primarily due to high traffic. Locations L11 and L13, designated as commercial zones, exceed their prescribed noise limits by 10 dB. Most critically, L12, classified as a silent zone, surpasses its permissible noise limit by approximately 28 dB, which is unacceptable. The quietest area L3, records a noise level of 71.14 dB.
+          </p>
+          <p class="map-description">
+            <strong>Noise range:</strong> 71.14 - 78.18 dB index values
+          </p>
+        </div>
+
+        <div class="map-item">
+          <img src="{{ url_for('static', filename='images/' +
+          "Evening_noise_map.png") }}">
+          <h3 class="map-title">Evening Noise Map</h3>
+          <p class="map-description">
+            The evening period noise distribution reveals significant variations across monitored locations, with a noise range of 71.88 - 78.66 dB. Hotspots L11, L12 exhibit elevated noise levels between 76 and 79 dB, primarily due to high traffic. Location L11, designated as commercial zone, exceed its prescribed noise limits by 11 dB. Most critically, L12, classified as a silent zone, surpasses its permissible noise limit by approximately 28 dB, which is unacceptable.Also many locations converging in the range 73-75 dB showing significant traffic across all locations during evening time.
+          </p>
+          <p class="map-description">
+            <strong>Noise range:</strong> 71.88 - 78.66 dB index values
+          </p>
+        </div>
+
+        <div class="map-item">
+          <img src="{{ url_for('static', filename='images/' +
+          "Overall_noise_map_updated.png") }}">
+          <h3 class="map-title">Overall Noise Map</h3>
+          <p class="map-description">
+             The composite noise map aggregates data from all time periods,
+            showing persistent hotspots at L12,L13 exhibiting elevated noise levels between 76 and 79 dB, primarily due to high traffic. Location L13, designated as commercial zone, exceed its prescribed noise limits by 11 dB. Most critically, L12(KMC Hospital) which primarily is a hospital area , classified as a silent zone, surpasses its permissible noise limit by approximately 29 dB, which is unacceptable.This map provides a comprehensive view of the city's noise pollution patterns across the entire day.
+          </p>
+          <p class="map-description">
+            <strong>Noise range:</strong> 71.42 - 79.06 dB index values
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card mb-12">
+    <div class="card-header">Monitoring Location Analysis</div>
+    <div class="card-body">
+      <p>
+        The following table provides a comparative analysis of noise levels
+        across different monitoring locations and time periods:
+      </p>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Location ID</th>
+              <th>Morning (dB)</th>
+              <th>Afternoon (dB)</th>
+              <th>Evening (dB)</th>
+              <th>Overall Average (dB)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>L1</td>
+              <td>74.05</td>
+              <td>74.05</td>
+              <td>74.08</td>
+              <td>74.09</td>
+            </tr>
+            <tr>
+              <td>L2</td>
+              <td>71.2</td>
+              <td>72.27</td>
+              <td>72.52</td>
+              <td>72.78</td>
+            </tr>
+            <tr>
+              <td>L3</td>
+              <td>71.2</td>
+              <td>71.14</td>
+              <td>71.88</td>
+              <td>71.42</td>
+            </tr>
+            <tr>
+              <td>L4</td>
+              <td>73.5</td>
+              <td>74.41</td>
+              <td>74.03</td>
+              <td>74.24</td>
+            </tr>
+            <tr>
+              <td>L5</td>
+              <td>75.1</td>
+              <td>74.7</td>
+              <td>73.48</td>
+              <td>73.90</td>
+            </tr>
+            <tr>
+              <td>L6</td>
+              <td>75.9</td>
+              <td>72.91</td>
+              <td>73.1</td>
+              <td>73.20</td>
+            </tr>
+            <tr>
+              <td>L7</td>
+              <td>79.7</td>
+              <td>74.75</td>
+              <td>75.52</td>
+              <td>74.86</td>
+            </tr>
+            <tr>
+              <td>L8</td>
+              <td>70.9</td>
+              <td>71.83</td>
+              <td>71.9</td>
+              <td>71.71</td>
+            </tr>
+            <tr>
+              <td>L9</td>
+              <td>74.8</td>
+              <td>74.14</td>
+              <td>73.85</td>
+              <td>74.04</td>
+            </tr>
+            <tr>
+              <td>L10</td>
+              <td>75.7</td>
+              <td>75.22</td>
+              <td>73.76</td>
+              <td>75.01</td>
+            </tr>
+            <tr>
+              <td>L11</td>
+              <td>71.1</td>
+              <td>75.48</td>
+              <td>76.1</td>
+              <td>75.81</td>
+            </tr>
+            <tr>
+              <td>L12</td>
+              <td>74.7</td>
+              <td>78.18</td>
+              <td>78.66</td>
+              <td>79.07</td>
+            </tr>
+            <tr>
+              <td>L13</td>
+              <td>76.4</td>
+              <td>75.76</td>
+              <td>75</td>
+              <td>76.02</td>
+            </tr>
+            <tr>
+              <td>L14</td>
+              <td>75.2</td>
+              <td>74.37</td>
+              <td>75.18</td>
+              <td>74.88</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="table-note">
+        <i
+          >Note: The higher the noise value in dB greater the noise
+          pollution.</i
+        >
+      </p>
+    </div>
+  </div>
+
+  <div class="card mb-12">
+    <div class="card-header">Key Findings and Recommendations</div>
+    <div class="card-body">
+      <h3>Major Noise Pollution Hotspots</h3>
+      <ul>
+        <li>
+          <strong>Persistent Hotspots:</strong> Locations L11, L13, and L12
+          consistently show high noise pollution levels across all time periods.
+        </li>
+        <li>
+          <strong>Time-Specific Patterns:</strong> L6 becomes comparitely better
+          during evening hours.
+        </li>
+        <li>
+          <strong>Quietest Areas:</strong> Location L2,L8,L3 maintain the lowest
+          noise pollution levels across the whole day.
+        </li>
+      </ul>
+
+      <h3>Temporal Patterns</h3>
+      <ul>
+        <li>
+          <strong>Morning:</strong> Higher overall noise levels in the North and
+          North eastern parts of the city, likely due to morning commute.
+        </li>
+        <li>
+          <strong>Afternoon:</strong> Central zones advanced a little higher
+          noise levels compared to morning.
+        </li>
+        <li>
+          <strong>Evening:</strong> Decreased amount of noise pollution in
+          northern areas and Northeastern areas persistently having high noise
+          values.
+        </li>
+      </ul>
+
+      <h3>Recommendations</h3>
+      <ul>
+        <li>
+          Implement noise barriers and sound-absorbing infrastructure at
+          identified hotspots (L11, L12, L13).
+        </li>
+        <li>
+          Consider time-specific traffic management strategies, particularly
+          during morning and afternoon peak hours.
+        </li>
+        <li>
+          Evaluate and potentially replicate urban planning aspects of the
+          quieter areas (around L12) in future development projects.
+        </li>
+        <li>
+          Develop targeted noise reduction policies based on the time-of-day
+          patterns observed in this analysis.
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">Methodology</div>
+    <div class="card-body">
+      <p>This noise mapping analysis utilized:</p>
+      <ul>
+        <li>
+          Strategic placement of noise monitoring equipment at 14 locations
+          across Kanpur city.
+        </li>
+        <li>
+          Data collection across three time periods: morning, afternoon, and
+          evening.
+        </li>
+        <li>
+          Heat map visualization technique with color-coding based on Noise
+          Value Index.
+        </li>
+        <li>
+          Spatial interpolation to visualize noise propagation between
+          monitoring points.
+        </li>
+      </ul>
+
+      <p class="mt-4">
+        This project aims to provide urban planners, environmental authorities,
+        and city residents with actionable insights for noise pollution
+        mitigation and improved urban acoustic quality in Kanpur city.
+      </p>
+    </div>
+  </div>
+</div>
+<!-- Full-screen overlay for enlarged image -->
+<div id="fullscreen-overlay">
+  <img id="fullscreen-image" src="" alt="Enlarged Noise Map" />
+  <button id="close-button" aria-label="Close full-screen view">✕</button>
+</div>
+
+<style>
+  /* Base Styles */
+  body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+  }
+
+  .container {
+    font-family: "Ancizar Serif", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    font-size: 17px;
+  }
+
+  /* Card Styles */
+  .card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    border-left: 4px solid #2e7d32;
+    margin-bottom: 3rem;
+  }
+
+  .card-header {
+    background-color: #f0f8f0;
+    padding: 1rem 1.5rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #2e7d32;
+    border-bottom: 1px solid #e0f2e0;
+  }
+
+  .card-body {
+    padding: 1.5rem;
+  }
+
+  /* Page Header */
+  .page-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding: 2rem 0;
+    background-color: #e8f5e9;
+    border-bottom: 1px solid #c8e6c9;
+  }
+
+  .page-header h1 {
+    font-size: 2.25rem;
+    color: #1b5e20;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .page-subheader {
+    font-size: 1.2rem;
+    color: #2e7d32;
+    margin-top: 0.5rem;
+  }
+
+  /* Typography */
+  h3 {
+    color: #2e7d32;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+
+  ul {
+    padding-left: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  ul li {
+    margin-bottom: 0.5rem;
+  }
+
+  strong {
+    font-weight: 600;
+  }
+
+  p {
+    margin-bottom: 1rem;
+  }
+
+  /* Map Styles */
+  .map-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 2rem;
+  }
+
+  .map-item {
+    flex: 1 1 48%;
+    min-width: 300px;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+
+  .map-item img {
+    width: 100%;
+    max-width: 600px;
+    height: 400px;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd;
+    cursor: pointer; /* Indicate clickable image */
+  }
+
+  .map-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #2e7d32;
+    margin: 0.75rem 0;
+  }
+
+  .map-description {
+    font-size: 0.95rem;
+    color: #555;
+  }
+
+  /* Full-screen Overlay Styles */
+  #fullscreen-overlay {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent background */
+    z-index: 1000; /* Ensure it appears above other content */
+    justify-content: center;
+    align-items: center;
+  }
+
+  #fullscreen-image {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain; /* Preserve aspect ratio */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  #close-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: #fff;
+    color: #333;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 24px;
+    line-height: 40px;
+    text-align: center;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.2s;
+  }
+
+  #close-button:hover {
+    background-color: #ddd;
+  }
+
+  /* Prevent scrolling when overlay is open */
+  body.fullscreen-active {
+    overflow: hidden;
+  }
+
+  /* Table Styles */
+  .table-container {
+    overflow-x: auto;
+    margin: 1rem 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+    background-color: white;
+  }
+
+  th {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    font-weight: 600;
+    text-align: left;
+    padding: 0.75rem 1rem;
+    border: 1px solid #c8e6c9;
+  }
+
+  td {
+    padding: 0.75rem 1rem;
+    border: 1px solid #e0e0e0;
+  }
+
+  tr:nth-child(even) {
+    background-color: #f5f5f5;
+  }
+
+  tr:hover {
+    background-color: #edf7ee;
+  }
+
+  /* Color Legend */
+  .legend-container {
+    margin: 1.5rem 0;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+  }
+
+  .color-box {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+  }
+
+  .red-zone {
+    background-color: #ff6b6b;
+  }
+
+  .orange-zone {
+    background-color: #ffa94d;
+  }
+
+  .yellow-zone {
+    background-color: #ffec99;
+  }
+
+  .green-zone {
+    background-color: #b2f2bb;
+  }
+
+  .blue-zone {
+    background-color: #74c0fc;
+  }
+
+  /* Helper Classes */
+  .text-center {
+    text-align: center;
+  }
+
+  .font-bold {
+    font-weight: 700;
+  }
+
+  .font-medium {
+    font-weight: 500;
+  }
+
+  .mb-12 {
+    margin-bottom: 3rem;
+  }
+
+  .mb-4 {
+    margin-bottom: 1rem;
+  }
+
+  .mb-2 {
+    margin-bottom: 0.5rem;
+  }
+
+  .mt-4 {
+    margin-top: 1rem;
+  }
+
+  .mt-6 {
+    margin-top: 1.5rem;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .map-item {
+      flex: 1 1 100%;
+    }
+
+    .container {
+      padding: 1rem;
+    }
+
+    .map-item img {
+      max-width: 100%;
+      height: 300px;
+    }
+
+    #close-button {
+      top: 10px;
+      right: 10px;
+      width: 32px;
+      height: 32px;
+      font-size: 20px;
+      line-height: 32px;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const images = document.querySelectorAll(".map-item img");
+    const overlay = document.getElementById("fullscreen-overlay");
+    const fullscreenImage = document.getElementById("fullscreen-image");
+    const closeButton = document.getElementById("close-button");
+
+    // Function to open full-screen overlay
+    const openFullscreen = (src, alt) => {
+      fullscreenImage.src = src;
+      fullscreenImage.alt = alt;
+      overlay.style.display = "flex";
+      document.body.classList.add("fullscreen-active");
+    };
+
+    // Function to close full-screen overlay
+    const closeFullscreen = () => {
+      overlay.style.display = "none";
+      fullscreenImage.src = ""; // Clear image source
+      document.body.classList.remove("fullscreen-active");
+    };
+
+    // Add click event to each image
+    images.forEach((image) => {
+      image.addEventListener("click", () => {
+        openFullscreen(image.src, image.alt);
+      });
+    });
+
+    // Close overlay when close button is clicked
+    closeButton.addEventListener("click", closeFullscreen);
+
+    // Close overlay when clicking outside the image
+    overlay.addEventListener("click", (event) => {
+      if (event.target === overlay) {
+        closeFullscreen();
+      }
+    });
+
+    // Allow closing with Escape key
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && overlay.style.display === "flex") {
+        closeFullscreen();
+      }
+    });
+  });
+</script>
+{% endblock %}

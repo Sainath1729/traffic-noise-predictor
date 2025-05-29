@@ -58,5 +58,5 @@ def predict():
             error = "Please upload a valid .xlsx file."
     return render_template("predict.html", predictions=predictions, csv_file=csv_file, error=error)
 
-if __name__ == "__main__":
-    app.run(debug=True)
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=int(os.environ.get("PORT", 5000)))
